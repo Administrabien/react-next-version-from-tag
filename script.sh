@@ -40,7 +40,7 @@ git config --global user.name "github-actions[bot]"
 git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
 # 3. Subir el tag al repositorio
-git push origin
+git push origin --tags
 
 # 6. Retornar el valor a GitHub Actions
 echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
