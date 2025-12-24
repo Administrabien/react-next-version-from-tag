@@ -10,10 +10,10 @@ inputs:
 
 # Definimos parámetros de salida
 outputs:
-  estado:
+  tag_version:
     description: 'Tag version created'
     value: ${{ steps.script.outputs.TAG_VERSION }} # Nombre usado en el script
-  version:
+  tag_name:
     description: 'Tag name created'
     value: ${{ steps.script.outputs.TAG_NAME }}
 runs:
