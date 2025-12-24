@@ -16,13 +16,16 @@ fi
 echo "Último tag detectado: $LAST_TAG"
 
 # 3. Quitar la 'v' inicial
-TAG_CLEAN=${LAST_TAG#v}
+TAG_CLEAN=${LAST_TAG#v} 0.0.1
 
 # 4. Dividir el tag en los 3 números de la izquierda (BASE) y el de la derecha (LAST)
 # Expresión regular para separar: los primeros 3 grupos y el último
 # Si el tag es v1.0.0.5 -> BASE_TAG=1.0.0, LAST=5
 BASE_TAG=$(echo $TAG_CLEAN | cut -d. -f1-3)
 LAST=$(echo $TAG_CLEAN | cut -d. -f4)
+
+echo "BASE_TAG: $BASE_TAG"
+echo "LAST: $LAST"
 
 # Si el tag no tiene 4 partes (ej: v1.0.0), LAST estará vacío
 LAST=${LAST:-0}
