@@ -13,9 +13,9 @@ outputs:
   next_version:
     description: 'Tag version created'
     value: ${{ steps.script.outputs.NEXT_VERSION }} # Nombre usado en el script
-  tag_name:
+  next_tag:
     description: 'Tag name created'
-    value: ${{ steps.script.outputs.TAG_NAME }}
+    value: ${{ steps.script.outputs.NEXT_TAG }}
 runs:
   using: "composite" # Indica que es una combinación de pasos
   steps:

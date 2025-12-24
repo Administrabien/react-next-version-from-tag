@@ -63,4 +63,4 @@ git push origin --tags
 
 # 9. Retornar los valores a GitHub Actions
 echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
-echo "TAG_NAME=v$NEXT_VERSION" >> "$GITHUB_OUTPUT"
+echo "NEXT_TAG=v$NEXT_VERSION" >> "$GITHUB_OUTPUT"
