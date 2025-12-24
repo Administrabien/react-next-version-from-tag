@@ -1,48 +1,45 @@
 #!/bin/bash
 set -e
 
-# 1. Extraer versión del package.json
+# 1. Obtener la versión del package.json (ej: 1.0.0)
 PACKAGE_VERSION=$(node -p "require('./package.json').version")
-# Separar package version en Major, Minor, Release
-IFS='.' read -r P_MAJOR P_MINOR P_RELEASE <<< "$PACKAGE_VERSION"
+echo "Versión en package.json: $PACKAGE_VERSION"
 
-# 2. Extraer el último tag que empiece con "v"
+# 2. Obtener el último tag que empieza con 'v'
 git fetch --tags --force
+# Buscamos el tag más reciente. Si no existe, usamos v0.0.0.0 como base
 LAST_TAG=$(git tag -l "v*" --sort=-creatordate | head -n 1)
 
 if [ -z "$LAST_TAG" ]; then
-    # Si no hay tags, usamos la versión del package.json con release en 0
-    LAST_TAG="v0.0.0"
+    LAST_TAG="v0.0.0.0"
 fi
+echo "Último tag detectado: $LAST_TAG"
 
-# Limpiar la 'v' del tag
-TAG_VERSION=${LAST_TAG#v}
-IFS='.' read -r T_MAJOR T_MINOR T_RELEASE <<< "$TAG_VERSION"
+# 3. Quitar la 'v' inicial
+TAG_CLEAN=${LAST_TAG#v}
 
-# 3 y 4. Lógica de comparación
-if [ "$P_MAJOR" -eq "$T_MAJOR" ] && [ "$P_MINOR" -eq "$T_MINOR" ]; then
-    # Son iguales: Usamos base del tag e incrementamos release del tag
-    NEXT_RELEASE=$((T_RELEASE + 1))
-    NEXT_VERSION="$T_MAJOR.$T_MINOR.$NEXT_RELEASE"
+# 4. Dividir el tag en los 3 números de la izquierda (BASE) y el de la derecha (LAST)
+# Expresión regular para separar: los primeros 3 grupos y el último
+# Si el tag es v1.0.0.5 -> BASE_TAG=1.0.0, LAST=5
+BASE_TAG=$(echo $TAG_CLEAN | cut -d. -f1-3)
+LAST=$(echo $TAG_CLEAN | cut -d. -f4)
+
+# Si el tag no tiene 4 partes (ej: v1.0.0), LAST estará vacío
+LAST=${LAST:-0}
+
+# 5, 6 y 7. Comparación de versiones
+if [ "$PACKAGE_VERSION" == "$BASE_TAG" ]; then
+    echo "Las versiones coinciden. Incrementando número de release."
+    LAST=$((LAST + 1))
 else
-    # Son distintos: Usamos base del package e incrementamos su propio release
-    NEXT_RELEASE=$((P_RELEASE + 1))
-    NEXT_VERSION="$P_MAJOR.$P_MINOR.$NEXT_RELEASE"
+    echo "Nueva versión detectada en package.json. Reiniciando release a 0."
+    LAST=0
 fi
 
-# 5. Crear el tag en el repo (solo localmente en el runner, el push se hace después)
-TAG_NAME="v$NEXT_VERSION"
-echo "Creando nuevo tag: $TAG_NAME"
-git tag $TAG_NAME
+# 8. Concatenar para formar la versión final (x.x.x.x)
+NEXT_VERSION="$PACKAGE_VERSION.$LAST"
+echo "NEXT_VERSION calculada: $NEXT_VERSION"
 
-# 1. Configurar la identidad del bot
-git config --global user.name "github-actions[bot]"
-git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-# 3. Subir el tag al repositorio
-git push origin --tags
-echo "Tag pushed"
-
-# 6. Retornar el valor a GitHub Actions
+# 9. Retornar los valores a GitHub Actions
 echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
-echo "TAG_NAME=$TAG_NAME" >> "$GITHUB_OUTPUT"
+echo "TAG_NAME=v$NEXT_VERSION" >> "$GITHUB_OUTPUT"
