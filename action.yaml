@@ -11,11 +11,11 @@ inputs:
 # Definimos parámetros de salida
 outputs:
   estado:
-    description: 'El resultado del script'
-    value: ${{ steps.script.outputs.estado_final }} # Nombre usado en el script
+    description: 'Tag version created'
+    value: ${{ steps.script.outputs.tag_verion }} # Nombre usado en el script
   version:
-    description: 'Versión procesada'
-    value: ${{ steps.script.outputs.version_detectada }}
+    description: 'Tag name created'
+    value: ${{ steps.script.outputs.tag_name }}
 runs:
   using: "composite" # Indica que es una combinación de pasos
   steps:
@@ -25,6 +25,6 @@ runs:
       run: chmod +x ${{ github.action_path }}/script.sh
 
     - id: script
-      name: Correr script bash
+      name: Tag and get next version number
       shell: bash
-      run: ${{ github.action_path }}/script.sh "${{ inputs.nombre-usuario }}"
+      run: ${{ github.action_path }}/script.sh
