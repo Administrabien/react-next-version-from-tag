@@ -1,0 +1,30 @@
+name: 'Mi Saludador Personalizado'
+description: 'Saluda al usuario y crea un archivo de log'
+
+# Definimos parámetros de entrada
+inputs:
+  nombre-usuario:
+    description: 'Nombre de la persona a saludar'
+    required: true
+    default: 'Juanito Perez'
+
+# Definimos parámetros de salida
+outputs:
+  estado:
+    description: 'El resultado del script'
+    value: ${{ steps.script.outputs.estado_final }} # Nombre usado en el script
+  version:
+    description: 'Versión procesada'
+    value: ${{ steps.script.outputs.version_detectada }}
+runs:
+  using: "composite" # Indica que es una combinación de pasos
+  steps:
+    - name: Dar permisos al script
+      shell: bash
+      # 'github.action_path' es la ruta donde vive tu action, no el repo del usuario
+      run: chmod +x ${{ github.action_path }}/script.sh
+
+    - id: script
+      name: Correr script bash
+      shell: bash
+      run: ${{ github.action_path }}/script.sh "${{ inputs.nombre-usuario }}"
