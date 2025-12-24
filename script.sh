@@ -42,9 +42,24 @@ else
     LAST=1
 fi
 
+
+
+
 # 8. Concatenar para formar la versión final (x.x.x.x)
 NEXT_VERSION="$PACKAGE_VERSION.$LAST"
 echo "NEXT_VERSION calculada: $NEXT_VERSION"
+
+#----- TAGGING
+git tag $NEXT_VERSION
+
+# 1. Configurar la identidad del bot
+git config --global user.name "github-actions[bot]"
+git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+# 3. Subir el tag al repositorio
+git push origin
+git push origin --tags
+#------ END TAGGING
 
 # 9. Retornar los valores a GitHub Actions
 echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
