@@ -24,11 +24,14 @@ TAG_CLEAN=${LAST_TAG#v}
 BASE_TAG=$(echo $TAG_CLEAN | cut -d. -f1-3)
 LAST=$(echo $TAG_CLEAN | cut -d. -f4)
 
+if [ -z "$LAST" ]; then
+    LAST="0"
+fi
+
+LAST=${LAST:-0}
+
 echo "BASE_TAG: $BASE_TAG"
 echo "LAST: $LAST"
-
-# Si el tag no tiene 4 partes (ej: v1.0.0), LAST estará vacío
-LAST=${LAST:-0}
 
 # 5, 6 y 7. Comparación de versiones
 if [ "$PACKAGE_VERSION" == "$BASE_TAG" ]; then
