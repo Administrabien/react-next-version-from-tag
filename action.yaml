@@ -12,10 +12,10 @@ inputs:
 outputs:
   estado:
     description: 'Tag version created'
-    value: ${{ steps.script.outputs.tag_verion }} # Nombre usado en el script
+    value: ${{ steps.script.outputs.TAG_VERSION }} # Nombre usado en el script
   version:
     description: 'Tag name created'
-    value: ${{ steps.script.outputs.tag_name }}
+    value: ${{ steps.script.outputs.TAG_NAME }}
 runs:
   using: "composite" # Indica que es una combinación de pasos
   steps:
