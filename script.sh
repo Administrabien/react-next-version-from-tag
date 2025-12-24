@@ -39,7 +39,7 @@ if [ "$PACKAGE_VERSION" == "$BASE_TAG" ]; then
     LAST=$((LAST + 1))
 else
     echo "Nueva versión detectada en package.json. Reiniciando release a 0."
-    LAST=1
+    LAST=0
 fi
 
 
