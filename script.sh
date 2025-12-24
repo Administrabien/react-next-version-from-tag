@@ -16,7 +16,7 @@ fi
 echo "Último tag detectado: $LAST_TAG"
 
 # 3. Quitar la 'v' inicial
-TAG_CLEAN=${LAST_TAG#v} 0.0.1
+TAG_CLEAN=${LAST_TAG#v}
 
 # 4. Dividir el tag en los 3 números de la izquierda (BASE) y el de la derecha (LAST)
 # Expresión regular para separar: los primeros 3 grupos y el último
