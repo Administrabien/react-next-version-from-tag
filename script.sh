@@ -35,6 +35,13 @@ TAG_NAME="v$NEXT_VERSION"
 echo "Creando nuevo tag: $TAG_NAME"
 git tag $TAG_NAME
 
+# 1. Configurar la identidad del bot
+git config --global user.name "github-actions[bot]"
+git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+# 3. Subir el tag al repositorio
+git push
+
 # 6. Retornar el valor a GitHub Actions
 echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
 echo "TAG_NAME=$TAG_NAME" >> "$GITHUB_OUTPUT"
