@@ -1,13 +1,6 @@
 name: 'Mi Saludador Personalizado'
 description: 'Saluda al usuario y crea un archivo de log'
 
-# Definimos parámetros de entrada
-inputs:
-  nombre-usuario:
-    description: 'Nombre de la persona a saludar'
-    required: true
-    default: 'Juanito Perez'
-
 # Definimos parámetros de salida
 outputs:
   next_version:
