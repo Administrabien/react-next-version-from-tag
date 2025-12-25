@@ -1,5 +1,5 @@
-name: 'Mi Saludador Personalizado'
-description: 'Saluda al usuario y crea un archivo de log'
+name: 'control version over a repo'
+description: 'get next version from a rect repository'
 
 # Definimos parámetros de salida
 outputs:
