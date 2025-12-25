@@ -8,7 +8,7 @@ echo "Versión en package.json: $PACKAGE_VERSION"
 # 2. Obtener el último tag que empieza con 'v'
 git fetch --tags --force
 # Buscamos el tag más reciente. Si no existe, usamos v0.0.0.0 como base
-LAST_TAG=$(git tag -l "v*" --sort=-creatordate | head -n 1)
+LAST_TAG=$(git tag -l "v*" --sort=-refname | head -n 1)
 
 if [ -z "$LAST_TAG" ]; then
     LAST_TAG="v0.0.0.0"
